@@ -1,0 +1,20 @@
+{
+	"name": "rss-client-proto",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"directories": {
+		"test": "test"
+	},
+	"scripts": {
+		"watch": "spago bundle-app -w -m Main -t assets/index.js",
+		"serve": "parcel serve assets/index.html --open",
+		"test": "spago test"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"parcel": "^2.0.0-rc.0"
+	}
+}
