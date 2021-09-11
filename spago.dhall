@@ -2,13 +2,19 @@
 , dependencies =
   [ "aff"
   , "console"
-  , "const"
   , "effect"
+  , "either"
   , "halogen"
-  , "lists"
+  , "halogen-store"
   , "maybe"
   , "prelude"
   , "psci-support"
+  , "routing"
+  , "routing-duplex"
+  , "safe-coerce"
+  , "typelevel-prelude"
+  , "web-events"
+  , "web-uievents"
   ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs", "test/**/*.purs" ]
