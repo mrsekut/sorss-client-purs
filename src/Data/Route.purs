@@ -1,4 +1,4 @@
-module Data.Route (Route(..), route) where
+module Data.Route (Route(..), routeCodec) where
 
 import Prelude
 
@@ -26,8 +26,8 @@ instance Show Route where
 
 
 
-route :: RouteDuplex' Route
-route = root $ G.sum
+routeCodec :: RouteDuplex' Route
+routeCodec = root $ G.sum
   { "Home": G.noArgs
   , "Feed": "feed" / G.noArgs
   }

@@ -2,25 +2,16 @@ module Store where
 
 import Prelude
 
+import API.Request (BaseURL)
 
 
 type Store =
-  { logLevel :: LogLevel
+  { baseUrl :: BaseURL
   }
 
 
-
-data LogLevel = Dev | Prod
-
-derive instance Eq LogLevel
-derive instance Ord LogLevel
-
-
-
 data Action
-  = LogoutUser
 
 
 reduce :: Store -> Action -> Store
-reduce store = case _ of
-  LogoutUser -> store
+reduce store _ = store

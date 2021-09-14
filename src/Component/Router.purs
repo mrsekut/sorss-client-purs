@@ -2,7 +2,7 @@ module Component.Router where
 
 import Capability.Navigate (class Navigate, navigate)
 import Prelude
-import Data.Route (Route(..), route)
+import Data.Route (Route(..), routeCodec)
 import Routing.Duplex as RD
 import Routing.Hash (getHash)
 
@@ -64,7 +64,7 @@ handleAction :: ∀ o m
   -> H.HalogenM State Action ChildSlots o m Unit
 handleAction = case _ of
   Initialize -> do
-    initialRoute <- hush <<< (RD.parse route) <$> H.liftEffect getHash
+    initialRoute <- hush <<< (RD.parse routeCodec) <$> H.liftEffect getHash
     navigate $ fromMaybe Home initialRoute
   GoTo route e -> do
     liftEffect $ preventDefault $ toEvent e
