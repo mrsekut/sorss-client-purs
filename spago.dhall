@@ -16,6 +16,7 @@
   , "maybe"
   , "prelude"
   , "psci-support"
+  , "remotedata"
   , "routing"
   , "routing-duplex"
   , "safe-coerce"

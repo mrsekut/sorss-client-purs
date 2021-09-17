@@ -24,7 +24,7 @@ main :: Effect Unit
 main = HA.runHalogenAff do
   body <- HA.awaitBody
   let
-    baseUrl = BaseURL "https://localhost:8081"
+    baseUrl = BaseURL "http://localhost:8081"
 
   let
     initialStore :: Store

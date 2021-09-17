@@ -1,20 +1,25 @@
 module Component.Router where
 
-import Capability.Navigate (class Navigate, navigate)
 import Prelude
-import Data.Route (Route(..), routeCodec)
-import Routing.Duplex as RD
-import Routing.Hash (getHash)
 
+import Capability.Navigate (class Navigate, navigate)
+import Capability.Resource.Feed (class ManageFeed)
 import Data.Either (hush)
 import Data.Maybe (Maybe(..), fromMaybe)
+import Data.Route (Route(..), routeCodec)
+import Effect.Aff.Class (class MonadAff)
 import Effect.Class (class MonadEffect, liftEffect)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
-import Page.Home as Home
+import Halogen.Store.Monad (class MonadStore)
 import Page.Feed as Feed
+import Page.Home as Home
+import Routing.Duplex as RD
+import Routing.Hash (getHash)
+import Store as Store
+import Type.Prelude (Proxy(..))
 import Web.Event.Event (preventDefault)
 import Web.UIEvent.MouseEvent (toEvent, MouseEvent)
 
@@ -28,16 +33,20 @@ data Action
   = Initialize
   | GoTo Route MouseEvent
 
+-- FIXME: move Util
+type OpaqueSlot slot = ∀ query. H.Slot query Void slot
+
 type ChildSlots =
   ( home :: Home.Slot Unit
-  , feed :: Feed.Slot Unit
+  , feed :: OpaqueSlot Unit
   )
 
-component
-  :: ∀ i o m
-  . MonadEffect m
+component :: ∀ m
+   . MonadAff m
+  => MonadStore Store.Action Store.Store m
   => Navigate m
-  => H.Component Query i o m
+  => ManageFeed m
+  => H.Component Query Unit Void m
 component =
   H.mkComponent
   { initialState: const { route: Nothing }
@@ -48,13 +57,13 @@ component =
     , initialize = Just Initialize
     }
   }
-
-render :: ∀ m. State -> H.ComponentHTML Action ChildSlots m
-render st = navbar $ case st.route of
-  Nothing -> HH.h1_ [ HH.text "Oh no! That page wasn't found" ]
-  Just route -> case route of
-    Home -> HH.slot Home._home unit Home.component unit absurd
-    Feed -> HH.slot Feed._feed unit Feed.component unit absurd
+  where
+  render :: State -> H.ComponentHTML Action ChildSlots m
+  render st = navbar $ case st.route of
+    Nothing -> HH.h1_ [ HH.text "Oh no! That page wasn't found" ]
+    Just route -> case route of
+      Home -> HH.slot Home._home unit Home.component unit absurd
+      Feed -> HH.slot_ (Proxy :: _ "feed") unit Feed.component unit
 
 
 handleAction :: ∀ o m
