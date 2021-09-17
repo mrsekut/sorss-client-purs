@@ -1,6 +1,6 @@
 module Data.RSS where
 
-import Data.List (List)
+import Data.Maybe (Maybe)
 
 
 
@@ -17,13 +17,13 @@ type Channels =
   , language    :: String
   , copyright   :: String
   , pubDate     :: String
-  -- , items       :: List Item
+  , items       :: Array Item
   }
 
 
 type Item =
-  { title       :: String
-  , link        :: String
-  , description :: String
-  , pubDate     :: String
+  { itemTitle       :: String
+  , itemLink        :: String
+  , itemDescription :: Maybe String
+  , itemPubDate     :: String
   }

@@ -5,7 +5,7 @@ import Prelude
 import Capability.Navigate (class Navigate)
 import Capability.Resource.Feed (class ManageFeed, getFeeds)
 import Data.Maybe (Maybe(..))
-import Data.RSS (RSS)
+import Data.RSS (RSS, Item)
 import Effect.Aff.Class (class MonadAff)
 import Effect.Class.Console (log)
 import Halogen as H
@@ -76,8 +76,15 @@ component =
       Failure err ->
         HH.div_
           [ HH.text $ "Failed loading RSS: " <> err ]
-      Success loadedRss ->
-        HH.div_ [ HH.text loadedRss.sChannels.title]
+      Success feeds ->
+        HH.div_ [
+          HH.text feeds.sChannels.title
+          , HH.ul_ $ map renderItem feeds.sChannels.items
+        ]
+
+    renderItem ::Item -> H.ComponentHTML Action slots m
+    renderItem item =
+      HH.div_ [ HH.text item.itemTitle ]
 
   handleAction :: ∀ slots. Action -> H.HalogenM State Action slots o m Unit
   handleAction = case _ of
