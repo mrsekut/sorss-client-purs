@@ -41,12 +41,13 @@ type ChildSlots =
   , feed :: OpaqueSlot Unit
   )
 
-component :: ∀ m
-   . MonadAff m
-  => MonadStore Store.Action Store.Store m
-  => Navigate m
-  => ManageFeed m
-  => H.Component Query Unit Void m
+component ::
+  ∀ m.
+  MonadAff m =>
+  MonadStore Store.Action Store.Store m =>
+  Navigate m =>
+  ManageFeed m =>
+  H.Component Query Unit Void m
 component =
   H.mkComponent
   { initialState: const { route: Nothing }
@@ -66,11 +67,12 @@ component =
       Feed -> HH.slot_ (Proxy :: _ "feed") unit Feed.component unit
 
 
-handleAction :: ∀ o m
-  . MonadEffect m
-  => Navigate m
-  => Action
-  -> H.HalogenM State Action ChildSlots o m Unit
+handleAction ::
+  ∀ o m.
+  MonadEffect m =>
+  Navigate m =>
+  Action ->
+  H.HalogenM State Action ChildSlots o m Unit
 handleAction = case _ of
   Initialize -> do
     initialRoute <- hush <<< (RD.parse routeCodec) <$> H.liftEffect getHash
