@@ -11,6 +11,7 @@ import Effect.Aff.Class (class MonadAff, liftAff)
 import Halogen.Store.Monad (class MonadStore, getStore)
 import Simple.JSON as Simple
 import Store (Action, Store)
+import Type.Prelude (Proxy)
 
 
 mkRequest :: ∀ m
@@ -28,14 +29,14 @@ mkRequest opts = do
 type Json = String
 
 
--- FIXME: interface a->a
 decode :: ∀ m a
    . MonadAff m
   => Simple.ReadForeign a
-  => (a -> a)
+  => Proxy a
   -> Maybe Json
   -> m (Maybe a)
 decode _ Nothing = pure Nothing
-decode f (Just json) = case Simple.readJSON json of
-  Right (r :: a) -> pure $ Just $ f r
+decode _ (Just json) = case Simple.readJSON json of
+  Right (r :: a) -> pure $ Just r
   Left _ -> pure Nothing
+

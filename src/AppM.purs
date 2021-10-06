@@ -19,6 +19,7 @@ import Routing.Hash (setHash)
 import Safe.Coerce (coerce)
 import Store (Action, Store)
 import Store as Store
+import Type.Prelude (Proxy(..))
 
 newtype AppM a = AppM (StoreT Store.Action Store.Store Aff a)
 
@@ -40,7 +41,8 @@ instance Navigate AppM where
   navigate = liftEffect <<< setHash <<< print routeCodec
 
 
+
 instance ManageFeed AppM where
   getFeeds = do
     res <- mkRequest { endpoint: Endpoint.RSS, method: Get }
-    decode (\(r :: RSS) -> r) res
+    decode (Proxy :: Proxy RSS) res
