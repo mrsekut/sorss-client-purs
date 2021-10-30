@@ -1,4 +1,4 @@
-{ name = "rss-client-proto"
+{ name = "sorss-client"
 , dependencies =
   [ "aff"
   , "affjax"
