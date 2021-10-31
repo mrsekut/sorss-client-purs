@@ -84,7 +84,7 @@ component =
 
     renderItem ::Item -> H.ComponentHTML Action slots m
     renderItem item =
-      HH.div_ [ HH.text item.itemTitle ]
+      HH.div_ [ HH.text item.title ]
 
   handleAction :: ∀ slots. Action -> H.HalogenM State Action slots o m Unit
   handleAction = case _ of

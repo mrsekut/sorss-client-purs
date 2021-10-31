@@ -22,8 +22,8 @@ type Channels =
 
 
 type Item =
-  { itemTitle       :: String
-  , itemLink        :: String
-  , itemDescription :: Maybe String
-  , itemPubDate     :: String
+  { title       :: String
+  , link        :: String
+  , description :: Maybe String
+  , pubDate     :: String
   }
